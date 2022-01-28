@@ -1,0 +1,39 @@
+.fondo, body{
+    background: #192a32;
+}
+
+.content{
+    width: 75%;
+}
+
+.bloque{
+    background: #1f3540;
+}
+
+.user{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.equis{
+    color: #33bab5;
+}
+
+.equisButtom, .circleButtom{
+    background: #192a32;
+    color: #8096a1;
+}
+
+.circle{
+    color: #e6b149;
+}
+
+.equisButtom:active, .circleButtom:active{
+    background: #8096a1;
+    color: #192a32;
+}
+
+.smallText{
+    color: #8096a1;
+}
