@@ -1,7 +1,7 @@
 //Para saber si presiona la X o la Y
 let xBtn = document.getElementById("x");
 let oBtn = document.getElementById("o");
-let userLetter = "O";
+let userLetter = "X";
 
 const replace = (currentId) => {
     let activeElement = document.getElementsByClassName("active");
@@ -10,8 +10,6 @@ const replace = (currentId) => {
     activeElement[0].className = activeElement[0].className.replace(" active", "");
     newElement.className += " active";
     userLetter = currentId.toLocaleUpperCase();
-
-    console.log(userLetter);
 
 }
 
