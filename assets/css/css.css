@@ -3,7 +3,7 @@
 }
 
 .content{
-    width: 75%;
+    width: 65%;
 }
 
 .bloque{
@@ -27,7 +27,11 @@
 .equisButtom, .circleButtom{
     background: #192a32;
     color: #8096a1;
-    transition: all 1s;
+    transition: all .8s;
+}
+
+.equisButtom:hover, .circleButtom:hover{
+    cursor: pointer;
 }
 
 .circle{
