@@ -16,6 +16,10 @@
     margin-right: auto;
 }
 
+.letraPersonalizada{
+    font-weight: 700;
+}
+
 .equis{
     color: #33bab5;
 }
