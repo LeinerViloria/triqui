@@ -23,13 +23,14 @@
 .equisButtom, .circleButtom{
     background: #192a32;
     color: #8096a1;
+    transition: all 1s;
 }
 
 .circle{
     color: #e6b149;
 }
 
-.equisButtom:active, .circleButtom:active{
+.active{
     background: #8096a1;
     color: #192a32;
 }
