@@ -62,12 +62,14 @@ a{
 
 .cuadricula{
     height: 60px;
-    /* padding: 20px 10px; */
     font-size: 40px;
     text-align: center;
 }
 
+.cuadricula:hover{
+    cursor: pointer;
+}
+
 .cuadro{
     background: #1f3540;
-    /* padding: 10px 30px; */
 }
