@@ -2,6 +2,7 @@
 let xBtn = document.getElementById("x");
 let oBtn = document.getElementById("o");
 let userLetter = "X";
+localStorage.setItem("userLetter", userLetter);
 
 const replace = (currentId) => {
     let activeElement = document.getElementsByClassName("active");
@@ -10,6 +11,8 @@ const replace = (currentId) => {
     activeElement[0].className = activeElement[0].className.replace(" active", "");
     newElement.className += " active";
     userLetter = currentId.toLocaleUpperCase();
+
+    localStorage.setItem("userLetter", userLetter);
 
 }
 

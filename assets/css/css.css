@@ -1,5 +1,5 @@
 .fondo, body{
-    background: #192a32;
+    background: rgb(25, 42, 50);
 }
 
 a{
@@ -29,13 +29,17 @@ a{
     color: #33bab5;
 }
 
-.equisButtom, .circleButtom{
+.iconButtom{
     background: #192a32;
     color: #8096a1;
     transition: all .84s;
 }
 
-.equisButtom:hover, .circleButtom:hover{
+.titleIcon{
+    color: #8096a1;
+}
+
+.iconButtom:hover{
     cursor: pointer;
 }
 
@@ -50,4 +54,20 @@ a{
 
 .smallText{
     color: #8096a1;
+}
+
+.titleGame{
+    font-size: 20px;
+}
+
+.cuadricula{
+    height: 60px;
+    /* padding: 20px 10px; */
+    font-size: 40px;
+    text-align: center;
+}
+
+.cuadro{
+    background: #1f3540;
+    /* padding: 10px 30px; */
 }
