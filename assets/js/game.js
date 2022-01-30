@@ -161,7 +161,7 @@ const putThePlayerMove = (zone) => {
     finishMove = whoDidItWin(PLAYER.group);
 
     if(finishMove){
-        showWinner("Gano el jugador");
+        showWinner("Jugador");
         victory = true;
     }
 
@@ -309,7 +309,7 @@ const pcMove = () => {
             finishMove = whoDidItWin(PC.group);
 
             if(finishMove){
-                showWinner("Gano el pc");
+                showWinner("Pc");
                 victory = true;
                 play = false;
             }else{
