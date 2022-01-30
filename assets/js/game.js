@@ -94,8 +94,10 @@ const c31 = document.getElementById("31");
 const c32 = document.getElementById("32");
 const c33 = document.getElementById("33");
 
-//Traigo el boton de reinicio
+//Traigo el boton de home
 const home = document.getElementById("home");
+//Traigo el boton de reinicio
+const resart = document.getElementById("resart");
 
 //Traigo el span para decir quien gano
 const winnerSpan = document.getElementById("winner");
@@ -508,6 +510,15 @@ c33.onclick = () =>{
 
 home.onclick = () => {
     goToHome();
+}
+
+resart.onclick = () => {
+    resartAll();
+}
+
+const resartAll = () => {
+    //Al recargarse la página queda como nueva la partida
+    location.reload();
 }
 
 const goToHome = () => {
