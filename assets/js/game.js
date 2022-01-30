@@ -246,6 +246,7 @@ const lookOverOneWay = (position, ids) => {
 
     if(posibilitiesToWin>=2){
         let specialPosition;
+        let verification;
         if(PC.character==currentTurn.toLowerCase()){
 
             if(first == false){
@@ -255,8 +256,11 @@ const lookOverOneWay = (position, ids) => {
             }else{
                 specialPosition = position.third;
             }
-            console.log(position, ids, "Pc, te sirve evitar la posicion "+specialPosition
-            );
+            verification = verifyPosition(specialPosition);
+            if(verification){
+                goodOptions.player.push(specialPosition);
+            }
+
         }else{
 
             if(first == false){
@@ -266,7 +270,11 @@ const lookOverOneWay = (position, ids) => {
             }else{
                 specialPosition = position.third;
             }
-            console.log(position, ids, "Pc, te sirve guardar la posicion "+specialPosition);
+            verification = verifyPosition(specialPosition);
+            if(verification){
+                goodOptions.pc.push(specialPosition);
+            }
+
         }
     }
 
@@ -344,13 +352,93 @@ const whoDidItWin = (group) => {
     return verification;
 }
 
+//Este for lo usa la funcion advise, para evitar escribirlo 3 veces
+const forAdvise = (options) => {
+    let validation = false;
+    let goodPosition = null;
+    for (let i = 0; i < options.length; i++) {
+        const element = options[i];
+        validation = verifyPosition(element);
+        if(validation){
+            goodPosition = element;
+            break;
+        }
+    }
+    return goodPosition;
+}
+
+const advise = () => {
+    if(victory==false){
+        let goodPosition;
+        //Miro si tengo opciones de ganar
+        if(goodOptions.pc.length>0){
+
+            let pcOptions = goodOptions.pc;
+            goodPosition = forAdvise(pcOptions);
+
+            if(goodPosition!=null){
+                return goodPosition;
+            }else if(goodOptions.player.length>0){
+
+                let playerOptions = goodOptions.player;
+                goodPosition = forAdvise(playerOptions);
+
+                if(goodPosition!=null){
+                    return goodPosition;
+                }else{
+                    return false;
+                }
+
+            }
+            else{
+                return false;
+            }
+
+        }else if(goodOptions.player.length>0){
+
+            let playerOptions = goodOptions.player;
+            goodPosition = forAdvise(playerOptions);
+
+            if(goodPosition!=null){
+                return goodPosition;
+            }else{
+                return false;
+            }
+
+        }else{
+            return false;
+        }
+
+    }else{
+        return false;
+    }
+}
+
 const pcMove = () => {
     let verification;
     let finishMove;
+    let position1;
+    let position2;
+    let final;
+    let smartMove;
     while(play==false && victory==false){
-        let position1 = numRandow();
-        let position2 = numRandow();
-        let final = position1+""+position2;
+        /**
+         * smartMove es una variable que
+         * almacenará posiciones claves
+         * para mantener el juego, ya sea una
+         * posicion de victoria, o una posicion para
+         * evitar la victoria del oponente
+         */
+        smartMove = advise();
+
+        if(smartMove==false){
+            position1 = numRandow();
+            position2 = numRandow();
+            final = position1+""+position2;
+        }else{
+            final = smartMove;
+        }
+
         verification = verifyPosition(final);
 
         if(verification){
