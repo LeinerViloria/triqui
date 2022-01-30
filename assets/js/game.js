@@ -2,71 +2,71 @@
  * Se crean las constantes para las letras X y O
  */
 
-const X = '<span class="equis letraPersonalizada">X</span>';
-const O = '<span class="circle letraPersonalizada">O</span>';
+const X = '<span class="equis equisGroup letraPersonalizada">X</span>';
+const O = '<span class="circle circleGroup letraPersonalizada">O</span>';
 let PLAYER={
     letter : null,
-    character : null
+    character : null,
+    group : null
 };
 let PC={
     letter : null,
-    character : null
+    character : null,
+    group : null
 };
 
 let movesX = 0;
 let movesO = 0;
 
 //Formas de ganar
-const waysToWin = {
+const WAYS_TO_WIN = {
     "horizontal" : [
         {
-            primera : "11",
-            segunda : "12",
-            tercera : "13"
+            first : "11",
+            second : "12",
+            third : "13"
         },
         {
-            primera : "21",
-            segunda : "22",
-            tercera : "23"
+            first : "21",
+            second : "22",
+            third : "23"
         },
         {
-            primera : "31",
-            segunda : "22",
-            tercera : "33"
+            first : "31",
+            second : "32",
+            third : "33"
         }
     ],
     "vertical" : [
         {
-            primera : "11",
-            segunda : "21",
-            tercera : "31"
+            first : "11",
+            second : "21",
+            third : "31"
         },
         {
-            primera : "12",
-            segunda : "22",
-            tercera : "32"
+            first : "12",
+            second : "22",
+            third : "32"
         },
         {
-            primera : "13",
-            segunda : "23",
-            tercera : "33"
+            first : "13",
+            second : "23",
+            third : "33"
         }
     ],
     "diagonal" : [
         {
-            primera : "11",
-            segunda : "22",
-            tercera : "33"
+            first : "11",
+            second : "22",
+            third : "33"
         },
         {
-            primera : "13",
-            segunda : "22",
-            tercera : "31"
+            first : "13",
+            second : "22",
+            third : "31"
         }
     ]
 };
-
-console.log(waysToWin);
 
 //Traigo a cada cuadro de la cuadrilla del juego
 //Estas son las zonas del juego
@@ -94,6 +94,8 @@ const turn = document.getElementById("turn");
 let currentTurn = "X";
 //Para saber cuándo el jugador puede jugar
 let play = false;
+//Hay victoria y el juego se detiene
+let victory = false;
 
 //Para sacar aleatoriamente la posicion en la que jugara el pc
 const numRandow = () => {
@@ -133,7 +135,11 @@ const showMoves = () =>{
 }
 
 const putThePlayerMove = (zone) => {
-    zone.innerHTML = PLAYER.letter;
+
+    if(victory==false){
+        zone.innerHTML = PLAYER.letter;
+    }
+    let finishMove;
 
     if(PLAYER.character=="x"){
         addMoveToX();
@@ -145,7 +151,14 @@ const putThePlayerMove = (zone) => {
     showMoves();
     play=false;
 
-    if((movesX+movesO)<9){
+    finishMove = whoDidItWin(PLAYER.group);
+
+    if(finishMove){
+        console.log("Gano el jugador");
+        victory = true;
+    }
+
+    if((movesX+movesO)<9 & victory==false){
         pcMove();
     }
 }
@@ -174,7 +187,6 @@ const verifyPosition = (position) => {
     currentDiv = currentDiv.trim();
     //True, puede ocupar ese cuadro
     //False, ya esta ocupado ese cuadro
-    console.log("Estoy buscando");
     if(currentDiv===""){
         return true;
     }else{
@@ -182,24 +194,127 @@ const verifyPosition = (position) => {
     }
 }
 
+const lookOverOneWay = (position, ids) => {
+    let first = false;
+    let second = false;
+    let third = false;
+
+    for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+
+        if(id == position.first){
+            first = true;
+        }
+        if(id == position.second){
+            second = true;
+        }
+        if(id == position.third){
+            third = true;
+        }
+
+    }
+
+    /**
+     * Si entra aqui es porque hay 3 ids
+     * que coinciden con alguna forma de ganar
+     */
+    if(first & second & third){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+const lookOverTheWays = (way, ids) => {
+    let itsEquals = false;
+
+    for (let i = 0; i < way.length; i++) {
+        const position = way[i];
+        const equality = lookOverOneWay(position, ids);
+        
+        if(equality){
+            itsEquals = true;
+            break;
+        }
+    }
+
+    return itsEquals;
+}
+
+const verifyVictory = (ids) => {
+    let horizonallyEqual, verticallyEqual, diagonallyEqual;
+
+    diagonallyEqual = lookOverTheWays(WAYS_TO_WIN.diagonal, ids);
+    
+    if(diagonallyEqual==false){
+        verticallyEqual = lookOverTheWays(WAYS_TO_WIN.vertical, ids);
+
+        if(verticallyEqual){
+            //Gano verticalmente
+            return true;
+        }
+
+    }else{
+        //Gano diagonalmente
+        return true;
+    }
+
+    if (diagonallyEqual==false && verticallyEqual==false) {
+        horizonallyEqual = lookOverTheWays(WAYS_TO_WIN.horizontal, ids);
+
+        if(horizonallyEqual){
+            //Gano horizontalmente
+            return true;
+        }else{
+            //No gano de ninguna manera
+            return false;
+        }
+    }
+}
+
+const whoDidItWin = (group) => {
+    let spans = document.getElementsByClassName(group);
+    let ids = [];
+    let verification;
+    
+    for (let i = 0; i < spans.length; i++) {
+        const span = spans[i];
+        const idSpan = span.parentElement.id;
+        ids.push(idSpan);
+    }
+
+    verification = verifyVictory(ids);
+
+    return verification;
+}
+
 const pcMove = () => {
     let verification;
-    while(play==false){
+    let finishMove;
+    while(play==false && victory==false){
         let position1 = numRandow();
         let position2 = numRandow();
         let final = position1+""+position2;
         verification = verifyPosition(final);
-
+        console.log(victory);
         if(verification){
             putThePcMove(final);
+            finishMove = whoDidItWin(PC.group);
 
-            play = true;
+            if(finishMove){
+                console.log("Gano el pc");
+                victory = true;
+                play = false;
+            }else{
+                play = true;
+            }
+
         }
     }
 }
 
 const userTurn = (origin) => {
-    if(play){
+    if(play & victory==false){
         let verification = verifyPosition(origin.id);
         
         if(verification){
@@ -266,8 +381,10 @@ window.onload = () => {
             loadPlayers("YOU", "CPU");
             PLAYER.letter=X;
             PLAYER.character = "x";
+            PLAYER.group = "equisGroup";
             PC.letter=O;
             PC.character = "o";
+            PC.group = "circleGroup";
 
             play = true;
             showMoves();
@@ -278,8 +395,10 @@ window.onload = () => {
              loadPlayers("PC", "YOU");
              PC.letter = X;
              PC.character = "x";
+             PC.group = "equisGroup";
              PLAYER.letter = O;
              PLAYER.character = "o";
+             PLAYER.group = "circleGroup";
              showMoves();
              pcMove();
         }
