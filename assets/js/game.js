@@ -83,6 +83,9 @@ const c33 = document.getElementById("33");
 //Traigo el boton de reinicio
 const home = document.getElementById("home");
 
+//Traigo el span para decir quien gano
+const winnerSpan = document.getElementById("winner");
+
 //Traigo los span de X y O para ver quien es quien
 const spanX = document.getElementById("spanX");
 const numMovesX = document.getElementById("movesX");
@@ -108,6 +111,10 @@ const numRandow = () => {
     let x = d + parseInt(min);
 
     return x;
+}
+
+const showWinner = (winner) => {
+    winnerSpan.textContent = winner;
 }
 
 //Para que se cargue el turno
@@ -154,7 +161,7 @@ const putThePlayerMove = (zone) => {
     finishMove = whoDidItWin(PLAYER.group);
 
     if(finishMove){
-        console.log("Gano el jugador");
+        showWinner("Gano el jugador");
         victory = true;
     }
 
@@ -302,7 +309,7 @@ const pcMove = () => {
             finishMove = whoDidItWin(PC.group);
 
             if(finishMove){
-                console.log("Gano el pc");
+                showWinner("Gano el pc");
                 victory = true;
                 play = false;
             }else{
