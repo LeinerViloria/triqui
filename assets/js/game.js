@@ -17,6 +17,20 @@ let PC={
 
 let movesX = 0;
 let movesO = 0;
+/**
+ * Esta variable guardará posiciones en las que
+ * el pc pueda ganar, así, para el siguiente turno,
+ * el programa mirará si esa posicion aun está
+ * disponible.
+ * Por ejemplo, está la X (PC) en la posicion 11, 22 y 13,
+ * el pc podria ganar en 31 o 33.
+ * En pc se guardaria sus posibles jugadas y, en player,
+ * las que debe tapar.
+ */
+let goodOptions = {
+    "pc" : [],
+    "player" : []
+};
 
 //Formas de ganar
 const WAYS_TO_WIN = {
@@ -120,6 +134,7 @@ const showWinner = (winner) => {
 //Para que se cargue el turno
 const loadTurn = (letter) => {
     letter = letter.toUpperCase();
+    currentTurn = letter;
     turn.textContent = letter;
 }
 
@@ -202,6 +217,11 @@ const verifyPosition = (position) => {
 }
 
 const lookOverOneWay = (position, ids) => {
+    /**
+     * Necesita minimo dos zonas para
+     * tener posibilidades de hacer algo
+     */
+    let posibilitiesToWin = 0;
     let first = false;
     let second = false;
     let third = false;
@@ -210,15 +230,44 @@ const lookOverOneWay = (position, ids) => {
         const id = ids[i];
 
         if(id == position.first){
+            posibilitiesToWin++;
             first = true;
         }
         if(id == position.second){
+            posibilitiesToWin++;
             second = true;
         }
         if(id == position.third){
+            posibilitiesToWin++;
             third = true;
         }
 
+    }
+
+    if(posibilitiesToWin>=2){
+        let specialPosition;
+        if(PC.character==currentTurn.toLowerCase()){
+
+            if(first == false){
+                specialPosition = position.first;
+            }else if(second == false){
+                specialPosition = position.second;
+            }else{
+                specialPosition = position.third;
+            }
+            console.log(position, ids, "Pc, te sirve evitar la posicion "+specialPosition
+            );
+        }else{
+
+            if(first == false){
+                specialPosition = position.first;
+            }else if(second == false){
+                specialPosition = position.second;
+            }else{
+                specialPosition = position.third;
+            }
+            console.log(position, ids, "Pc, te sirve guardar la posicion "+specialPosition);
+        }
     }
 
     /**
@@ -303,7 +352,7 @@ const pcMove = () => {
         let position2 = numRandow();
         let final = position1+""+position2;
         verification = verifyPosition(final);
-        console.log(victory);
+
         if(verification){
             putThePcMove(final);
             finishMove = whoDidItWin(PC.group);
