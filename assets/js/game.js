@@ -129,6 +129,7 @@ const numRandow = () => {
 
 const showWinner = (winner) => {
     winnerSpan.textContent = winner;
+    document.getElementById("btnWinner").className+= " winner";
 }
 
 //Para que se cargue el turno

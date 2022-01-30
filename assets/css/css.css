@@ -73,3 +73,9 @@ a{
 .cuadro{
     background: #1f3540;
 }
+
+.winner{
+    background-color: #ff6d05;
+    color: #000042;
+    border: 1px dotted #3f525b;
+}
